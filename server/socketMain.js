@@ -33,7 +33,7 @@ function socketMain(io, socket) {
 }
 
 function checkAndAdd(data) {
-  // bc we are doing db stuff, js won't want for db
+  // bc we are doing db stuff, js won't wait for db
   // so make this function a promise
   return new Promise((resolve, reject) => {
     Machine.findOne({ macA: data.macA }, (err, doc) => {
@@ -41,7 +41,6 @@ function checkAndAdd(data) {
         throw err;
         reject(err);
       } else if (doc === null) {
-        // these are the droids we're looking for
         // the record is not in the db, so add it
         let newMachine = new Machine(data);
         newMachine.save();

@@ -4,6 +4,41 @@
 // - socket.io-client
 
 const os = require("os");
+const io = require("socket.io-client");
+let socket = io("http://localhost:8181");
+
+socket.on("connect", () => {
+  // we need a way to identify this machine to whomever is concerned
+  const nI = os.networkInterfaces();
+  let macA;
+  // loop through all the nI for this machine and find a non-internal one
+  for (let key in nI) {
+    if (!nI[key][0].internal) {
+      macA = nI[key][0].mac;
+      console.log(macA);
+      break;
+    }
+  }
+  // client auth with single key value
+  socket.emit("clientAuth", "asdfajoi1093");
+
+  performanceData().then((allPerformanceData) => {
+    allPerformanceData.macA = macA;
+    socket.emit("initPerfData", allPerformanceData);
+  });
+
+  // send performance data to socket every second
+  let perfDataInterval = setInterval(() => {
+    performanceData().then((allPerformanceData) => {
+      allPerformanceData.macA = macA;
+      socket.emit("perfData", allPerformanceData);
+    });
+  }, 1000);
+
+  socket.on("disconnect", () => {
+    clearInterval(perfDataInterval);
+  });
+});
 
 function performanceData() {
   return new Promise(async (resolve, reject) => {
@@ -85,7 +120,3 @@ function getCpuLoad() {
     }, 100);
   });
 }
-
-performanceData().then((allPerformanceData) => {
-  console.log(allPerformanceData);
-});
