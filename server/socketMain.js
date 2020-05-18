@@ -12,6 +12,8 @@ function socketMain(io, socket) {
       socket.join("clients");
     } else if ((key = "lksdoiajdfa")) {
       // valid ui client has joined
+      socket.join("ui");
+      console.log("a react client has joined");
     } else {
       // an invalid client has joined, drop connection
       socket.disconnect(true);

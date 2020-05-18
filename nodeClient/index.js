@@ -22,6 +22,7 @@ socket.on("connect", () => {
       break;
     }
   }
+
   // client auth with single key value
   socket.emit("clientAuth", "asdfajoi1093");
 
