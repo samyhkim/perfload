@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Cpu from "./Cpu";
 import Mem from "./Mem";
 import Info from "./Info";
+import "./Widget.css";
 
 class Widget extends Component {
   state = {};
