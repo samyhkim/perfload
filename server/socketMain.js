@@ -28,7 +28,8 @@ function socketMain(io, socket) {
   });
 
   socket.on("perfData", (data) => {
-    console.log(data);
+    console.log("Tick...");
+    io.to("ui").emit("data", data);
   });
 }
 
