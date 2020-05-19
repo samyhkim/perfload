@@ -22,9 +22,14 @@ class Widget extends Component {
       macA,
       isActive,
     } = this.props.data;
-    const cpu = { cpuLoad };
-    const mem = { freeMem, totalMem, usedMem, memUsage };
+
+    const cpuWidgetId = `cpu-widget-${macA}`;
+    const memWidgetId = `mem-widget-${macA}`;
+
+    const cpu = { cpuLoad, cpuWidgetId };
+    const mem = { freeMem, totalMem, usedMem, memUsage, memWidgetId };
     const info = { macA, osType, upTime, cpuModel, numCores, cpuSpeed };
+
     let notActiveDiv = "";
     if (!isActive) {
       notActiveDiv = <div className="not-active">Offline</div>;
@@ -33,7 +38,7 @@ class Widget extends Component {
     return (
       <div className="widget col-sm-12">
         {notActiveDiv}
-        <h1>Widget</h1>
+
         <Cpu cpuData={cpu} />
         <Mem memData={mem} />
         <Info infoData={info} />

@@ -13,14 +13,21 @@ socket.on("connect", () => {
   let macA;
   // loop through all the nI for this machine and find a non-internal one
   for (let key in nI) {
-    if (!nI[key][0].internal) {
-      if (nI[key][0].mac === "00:00:00:00:00:00") {
-        macA = Math.random().toString(36).substr(2, 15);
-      } else {
-        macA = nI[key][0].mac;
-      }
-      break;
-    }
+    // FOR TESTING PURPOSES!!!
+    macA = Math.floor(Math.random() * 3) + 1;
+    break;
+    // FOR TESTING PURPOSES!!!
+
+    // if (!nI[key][0].internal) {
+    //   if (nI[key][0].mac === "00:00:00:00:00:00") {
+    //     macA = Math.random().toString(36).substr(2, 15);
+    //   } else {
+    //     macA = nI[key][0].mac;
+    //   }
+    //   // macA = Math.random().toString(36).substr(2, 15);
+    //   console.log(macA);
+    //   break;
+    // }
   }
 
   // client auth with single key value
@@ -68,6 +75,7 @@ function performanceData() {
     const numCores = cpus.length;
     //  - clock speed
     const cpuSpeed = cpus[0].speed;
+    const isActive = true;
     const cpuLoad = await getCpuLoad();
     resolve({
       freeMem,
@@ -80,6 +88,7 @@ function performanceData() {
       numCores,
       cpuSpeed,
       cpuLoad,
+      isActive,
     });
   });
 }

@@ -4,7 +4,6 @@ const Machine = require("./models/Machine");
 
 function socketMain(io, socket) {
   let macA;
-  console.log("someone called me, socketmain.");
 
   socket.on("clientAuth", (key) => {
     if (key === "asijfioadjf") {
@@ -13,11 +12,29 @@ function socketMain(io, socket) {
     } else if ((key = "lksdoiajdfa")) {
       // valid ui client has joined
       socket.join("ui");
-      console.log("a react client has joined");
+      console.log("A react client has joined.");
+      Machine.find({}, (err, docs) => {
+        docs.forEach((machine) => {
+          // on load, assume all machines are offline
+          machine.isActive = false;
+          io.to("ui").emit("data", machine);
+        });
+      });
     } else {
       // an invalid client has joined, drop connection
       socket.disconnect(true);
     }
+  });
+
+  socket.on("disconnect", () => {
+    console.log("Socket disconnected.");
+    Machine.find({ macA: macA }, (err, docs) => {
+      if (docs.length > 0) {
+        // send one last emit to React
+        docs[0].isActive = false;
+        io.to("ui").emit("data", docs[0]);
+      }
+    });
   });
 
   // a machine has connected, check to see if it's new
@@ -47,10 +64,10 @@ function checkAndAdd(data) {
         // the record is not in the db, so add it
         let newMachine = new Machine(data);
         newMachine.save();
-        resolve("added");
+        resolve("Added machine.");
       } else {
         // it is in the db, just resolve
-        resolve("found");
+        resolve("Found machine.");
       }
     });
   });

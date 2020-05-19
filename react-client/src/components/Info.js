@@ -15,7 +15,7 @@ function Info(props) {
         <strong>Type:</strong> {props.infoData.cpuModel}
       </div>
       <div className="widget-text">
-        <strong>Number of Cores:</strong> {props.infoData.cpuNumCores}
+        <strong>Number of Cores:</strong> {props.infoData.numCores}
       </div>
       <div className="widget-text">
         <strong>Clock Speed:</strong> {props.infoData.cpuSpeed}

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./App.css";
-import socket from "./utilities/socketConnection";
+import socket from "../utilities/socketConnection";
 import Widget from "./Widget";
 
 class App extends Component {
@@ -12,7 +12,6 @@ class App extends Component {
     socket.on("data", (data) => {
       // inside this callback, we just got some new data
       // update state to re-render App and child components
-      console.log(data);
       const currentState = { ...this.state.performanceData };
       // currentState is an object, not an array
       currentState[data.macA] = data;
